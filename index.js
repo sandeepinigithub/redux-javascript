@@ -1,11 +1,15 @@
 // imported redux 
-const redux = require('redux'); 
+const redux = require('redux');
 
 // Created a reducer function 
 const counterReducer = (state = { counter: 0 }, action) => {
-    return {
-        counter: state.counter + 1
-    };
+    //This time on initialization it will not increase counter value and hence counter = 1
+    if (action.type == 'increment') {
+        return {
+            counter: state.counter + 1
+        };
+    }
+    return state;
 };
 
 // Created a store and passed a reducer function 
@@ -23,4 +27,4 @@ const counterSubscriber = () => {
 //store.subscribe() method need some function which redux will executed whenever the data in store chnages 
 store.subscribe(counterSubscriber);
 
-store.dispatch({type : 'increment'});
+store.dispatch({ type: 'increment' });
