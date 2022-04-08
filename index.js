@@ -4,9 +4,14 @@ const redux = require('redux');
 // Created a reducer function 
 const counterReducer = (state = { counter: 0 }, action) => {
     //This time on initialization it will not increase counter value and hence counter = 1
-    if (action.type == 'increment') {
+    if (action.type === 'increment') {
         return {
             counter: state.counter + 1
+        };
+    }
+    if (action.type === 'decrement') {
+        return {
+            counter: state.counter - 1
         };
     }
     return state;
@@ -27,4 +32,7 @@ const counterSubscriber = () => {
 //store.subscribe() method need some function which redux will executed whenever the data in store chnages 
 store.subscribe(counterSubscriber);
 
-store.dispatch({ type: 'increment' });
+// dispatching action for increment 
+store.dispatch({ type: 'increment' }); 
+// dispatching action for decrement 
+store.dispatch({ type: 'decrement' }); 
