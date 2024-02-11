@@ -1,38 +1,38 @@
-// imported redux 
-const redux = require('redux');
+const {createSlice, configureStore}  = require('@reduxjs/toolkit');
 
-// Created a reducer function 
-const counterReducer = (state = { counter: 0 }, action) => {
-    //This time on initialization it will not increase counter value and hence counter = 1
-    if (action.type === 'increment') {
-        return {
-            counter: state.counter + 1
-        };
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    incremented: state => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1
+    },
+    decremented: state => {
+      state.value -= 1
     }
-    if (action.type === 'decrement') {
-        return {
-            counter: state.counter - 1
-        };
-    }
-    return state;
-};
+  }
+})
 
-// Created a store and passed a reducer function 
-const store = redux.createStore(counterReducer);
+const { incremented, decremented } = counterSlice.actions
 
-//Checking the present state of store
-// console.log(store.getState());
+const store = configureStore({
+  reducer: counterSlice.reducer
+})
 
-const counterSubscriber = () => {
-    const latestState = store.getState();
-    console.log(latestState);
-}
+// Can still subscribe to the store
+store.subscribe(() => console.log(store.getState()))
 
-// Now we need someone who subscribe the store and then we need to dispatch actions 
-//store.subscribe() method need some function which redux will executed whenever the data in store chnages 
-store.subscribe(counterSubscriber);
+// Still pass action objects to `dispatch`, but they're created for us
+store.dispatch(incremented())
+// {value: 1}
+store.dispatch(incremented())
+// {value: 2}
+store.dispatch(decremented())
+// {value: 1}
 
-// dispatching action for increment 
-store.dispatch({ type: 'increment' }); 
-// dispatching action for decrement 
-store.dispatch({ type: 'decrement' }); 
